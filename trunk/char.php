@@ -269,14 +269,14 @@ function char_main(&$sqlr, &$sqlc)
                     </td>
                     <td colspan="4">
                       <font class="bold">
-                        '.htmlentities($char['name']).' -
+                        '.htmlentities($char['name'],ENT_QUOTES, 'UTF-8').' -
                         <img src="img/c_icons/'.$char['race'].'-'.$char['gender'].'.gif" onmousemove="toolTip(\''.char_get_race_name($char['race']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" />
                         <img src="img/c_icons/'.$char['class'].'.gif" onmousemove="toolTip(\''.char_get_class_name($char['class']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" />
                         - lvl '.char_get_level_color($char['level']).'
                       </font>
                       <br />'.get_map_name($char['map'], $sqlm).' - '.get_zone_name($char['zone'], $sqlm).'
                       <br />'.$lang_char['honor_points'].': '.$char['totalHonorPoints'].' / '.$char['arenaPoints'].' - '.$lang_char['honor_kills'].': '.$char['totalKills'].'
-                      <br />'.$lang_char['guild'].': '.$guild_name.' | '.$lang_char['rank'].': '.htmlentities($guild_rank).'
+                      <br />'.$lang_char['guild'].': '.$guild_name.' | '.$lang_char['rank'].': '.htmlentities($guild_rank,ENT_QUOTES, 'UTF-8').'
                       <br />'.(($char['online']) ? '<img src="img/up.gif" onmousemove="toolTip(\'Online\', \'item_tooltip\')" onmouseout="toolTip()" alt="online" />' : '<img src="img/down.gif" onmousemove="toolTip(\'Offline\', \'item_tooltip\')" onmouseout="toolTip()" alt="offline" />');
       if ($showcountryflag)
       {

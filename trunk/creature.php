@@ -357,7 +357,7 @@ $output .= "<center>
 				<td><a href=\"$creature_datasite$creature[0]\" target=\"_blank\">$creature[0]</a></td>";
 				if ($loc_language)
 					$output .= "
-					<td><a href=\"creature.php?action=edit&amp;entry=$creature[0]&amp;error=4\">".htmlentities($creature[6])." ( {$creature[1]} )</a></td>";
+					<td><a href=\"creature.php?action=edit&amp;entry=$creature[0]&amp;error=4\">".htmlentities($creature[6], ENT_QUOTES, 'UTF-8')." ( {$creature[1]} )</a></td>";
 				else
 					$output .= "
 					<td><a href=\"creature.php?action=edit&amp;entry=$creature[0]&amp;error=4\">$creature[1]</a></td>";

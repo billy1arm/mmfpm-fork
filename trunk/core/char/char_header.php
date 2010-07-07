@@ -23,7 +23,7 @@ $output .= '
 $output .= '
 	<div id="tab_content2">
 		<font class="bold">
-			'.htmlentities($char['name']).' -
+			'.htmlentities($char['name'], ENT_QUOTES, 'UTF-8').' -
 			<img src="img/c_icons/'.$char['race'].'-'.$char['gender'].'.gif"
 			onmousemove="toolTip(\''.char_get_race_name($char['race']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" />
 			<img src="img/c_icons/'.$char['class'].'.gif"

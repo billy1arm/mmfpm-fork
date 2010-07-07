@@ -117,7 +117,7 @@ if ($sqlr->num_rows($result) > 1 && (count($server) > 1) && (count($characters_d
 				while ($realm = $sqlr->fetch_assoc($result))
 				if(isset($server[$realm['id']]))
 				$output .= '
-				<option value="'.$realm['id'].'">'.htmlentities($realm['name']).'</option>';
+				<option value="'.$realm['id'].'">'.htmlentities($realm['name'], ENT_QUOTES, 'UTF-8').'</option>';
 				$output .= '
 			</select>
 		</td>
