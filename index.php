@@ -57,7 +57,7 @@ function front(&$sqlr, &$sqlc, &$sqlm)
       return $uptimeString;
     }
 
-    $staticUptime = $lang_index['realm'].' <em>'.htmlentities(get_realm_name($realm_id)).'</em> '.$lang_index['online'].' for '.format_uptime($uptimetime);
+    $staticUptime = $lang_index['realm'].' <em>'.htmlentities(get_realm_name($realm_id),ENT_QUOTES, 'UTF-8').'</em> '.$lang_index['online'].' for '.format_uptime($uptimetime);
     unset($uptimetime);
     $output .= '
             <div id="uptime">
@@ -70,7 +70,7 @@ function front(&$sqlr, &$sqlc, &$sqlm)
   else
   {
     $output .= '
-            <h1><font class="error">'.$lang_index['realm'].' <em>'.htmlentities(get_realm_name($realm_id)).'</em> '.$lang_index['offline_or_let_high'].'</font></h1>';
+            <h1><font class="error">'.$lang_index['realm'].' <em>'.htmlentities(get_realm_name($realm_id),ENT_QUOTES, 'UTF-8').'</em> '.$lang_index['offline_or_let_high'].'</font></h1>';
     $online = false;
   }
 
@@ -251,11 +251,11 @@ function front(&$sqlr, &$sqlc, &$sqlm)
       if (($user_lvl >= $gm))
         $output .= '
                   <a href="char.php?id='.$char['guid'].'">
-                    <span onmousemove="toolTip(\''.id_get_gm_level($gm).'\', \'item_tooltip\')" onmouseout="toolTip()">'.htmlentities($char['name']).'</span>
+                    <span onmousemove="toolTip(\''.id_get_gm_level($gm).'\', \'item_tooltip\')" onmouseout="toolTip()">'.htmlentities($char['name'],ENT_QUOTES, 'UTF-8').'</span>
                   </a>';
       else
         $output .='
-                  <span onmousemove="toolTip(\''.id_get_gm_level($gm).'\', \'item_tooltip\')" onmouseout="toolTip()">'.htmlentities($char['name']).'</span>';
+                  <span onmousemove="toolTip(\''.id_get_gm_level($gm).'\', \'item_tooltip\')" onmouseout="toolTip()">'.htmlentities($char['name'],ENT_QUOTES, 'UTF-8').'</span>';
       $output .= '
                 </td>
                 <td>
@@ -269,7 +269,7 @@ function front(&$sqlr, &$sqlc, &$sqlm)
                   <span onmouseover="toolTip(\''.char_get_pvp_rank_name($char['totalHonorPoints'], char_get_side_id($char['race'])).'\', \'item_tooltip\')" onmouseout="toolTip()" style="color: white;"><img src="img/ranks/rank'.char_get_pvp_rank_id($char['totalHonorPoints'], char_get_side_id($char['race'])).'.gif" alt="" /></span>
                 </td>
                 <td>
-                  <a href="guild.php?action=view_guild&amp;error=3&amp;id='.$char['gname'].'">'.htmlentities($guild_name).'</a>
+                  <a href="guild.php?action=view_guild&amp;error=3&amp;id='.$char['gname'].'">'.htmlentities($guild_name,ENT_QUOTES, 'UTF-8').'</a>
                 </td>
                 <td><span onmousemove="toolTip(\'MapID:'.$char['map'].'\', \'item_tooltip\')" onmouseout="toolTip()">'.get_map_name($char['map'], $sqlm).'</span></td>
                 <td><span onmousemove="toolTip(\'ZoneID:'.$char['zone'].'\', \'item_tooltip\')" onmouseout="toolTip()">'.get_zone_name($char['zone'], $sqlm).'</span></td>';

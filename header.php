@@ -202,7 +202,7 @@ $output .= '
 		{
 			$set = ($realm_id === $realm['id']) ? '>' : '';
 $output .= '
-							<li><a href="realm.php?action=set_def_realm&amp;id='.$realm['id'].'&amp;url='.$_SERVER['PHP_SELF'].'">'.htmlentities($set.' '.$realm['name']).'</a></li>';
+							<li><a href="realm.php?action=set_def_realm&amp;id='.$realm['id'].'&amp;url='.$_SERVER['PHP_SELF'].'">'.htmlentities($set.' '.$realm['name'], ENT_QUOTES, 'UTF-8').'</a></li>';
 		}
 	}
 unset($set);

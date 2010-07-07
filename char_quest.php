@@ -89,7 +89,7 @@ function char_quest(&$sqlr, &$sqlc)
             </div>
             <div id="tab_content2">
               <font class="bold">
-                '.htmlentities($char['name']).' -
+                '.htmlentities($char['name'], ENT_QUOTES, 'UTF-8').' -
                 <img src="img/c_icons/'.$char['race'].'-'.$char['gender'].'.gif"
                   onmousemove="toolTip(\''.char_get_race_name($char['race']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" />
                 <img src="img/c_icons/'.$char['class'].'.gif"
@@ -135,7 +135,7 @@ function char_quest(&$sqlr, &$sqlc)
                 <tr>
                   <td>'.$data[0].'</td>
                   <td>('.$data[1].')</td>
-                  <td align="left"><a href="'.$quest_datasite.$data[0].'" target="_blank">'.htmlentities($data[2]).'</a></td>
+                  <td align="left"><a href="'.$quest_datasite.$data[0].'" target="_blank">'.htmlentities($data[2], ENT_QUOTES, 'UTF-8').'</a></td>
                   <td><img src="img/aff_qst.png" width="14" height="14" alt="" /></td>
                 </tr>';
         }
@@ -169,7 +169,7 @@ function char_quest(&$sqlr, &$sqlc)
                 <tr>
                   <td>'.$data[0].'</td>
                   <td>('.$data[1].')</td>
-                  <td align="left"><a href="'.$quest_datasite.$data[0].'" target="_blank">'.htmlentities($data[2]).'</a></td>
+                  <td align="left"><a href="'.$quest_datasite.$data[0].'" target="_blank">'.htmlentities($data[2], ENT_QUOTES, 'UTF-8').'</a></td>
                   <td><img src="img/aff_'.($data[3] ? 'tick' : 'qst' ).'.png" width="14" height="14" alt="" /></td>
                   <td><img src="img/aff_tick.png" width="14" height="14" alt="" /></td>
                 </tr>';

@@ -55,7 +55,7 @@ $dbr = $realm_db["name"];
 $sql = new DBLayer($hostr, $userr, $passwordr, $dbr);
 $query = $sql->query("SELECT name FROM realmlist WHERE id = ".$realm_id);
 $realm_name = $sql->fetch_assoc($query);
-$realm_name = htmlentities($realm_name["name"]);
+$realm_name = htmlentities($realm_name["name"], ENT_QUOTES, 'UTF-8');
 
 $gm_show_online = $gm_online;
 $gm_show_online_only_gmoff = $map_gm_show_online_only_gmoff;
