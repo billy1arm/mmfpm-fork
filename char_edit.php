@@ -40,23 +40,23 @@ if ($sql->num_rows($result))
 	if ($user_lvl >= $owner_gmlvl)
 	{
 		$sql->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
-		$result = $sql->query("SELECT guid, account, name, race, class, position_x, position_y, map, online, totaltime, position_z, zone, level, gender, arenaPoints, totalHonorPoints, todayHonorPoints, yesterdayHonorPoints, totalKills, todaykills, yesterdayKills, health, power1, power2, power3, power4, power5, power6, power7, money, xp FROM `characters` WHERE guid = '$id'");
+		$result = $sql->query("SELECT c.guid, c.account, c.name, c.race, c.class, c.position_x, c.position_y, c.map, c.online, c.totaltime, c.position_z, c.zone, c.level, c.gender, c.arenaPoints, c.totalHonorPoints, c.todayHonorPoints, c.yesterdayHonorPoints, c.totalKills, c.todaykills, c.yesterdayKills, c.health, c.power1, c.power2, c.power3, c.power4, c.power5, c.power6, c.power7, c.money, c.xp, COALESCE(guild_member.guildid,0) as guildid, c.equipmentCache FROM characters c LEFT JOIN guild_member ON c.guid = guild_member.guid WHERE c.guid = '$id'");
 		$char = $sql->fetch_row($result);
-		$char_data = explode(' ',$char[2]);
-		if($char[9]) 
+		$char_equip = explode(' ',$char[32]); // пока не используется!
+		if($char[8]) 
 			$online = "<font class=\"error\">{$lang_char['online']}</font>{$lang_char['edit_offline_only_char']}";
 		else 
 			$online = $lang_char['offline'];
 
-		if($char_data[CHAR_DATA_OFFSET_GUILD_ID])
+		if($char[31]>0)
 		{
-			$query = $sql->query("SELECT name FROM guild WHERE guildid ='{$char_data[CHAR_DATA_OFFSET_GUILD_ID]}'");
+			$query = $sql->query("SELECT name FROM guild WHERE guildid ='{$char[31]}'");
 			$guild_name = $sql->result($query, 0, 'name');
 			if ($user_lvl > 0 ) 
-				$guild_name = "<a href=\"guild.php?action=view_guild&amp;error=3&amp;id={$char_data[CHAR_DATA_OFFSET_GUILD_ID]}\" >$guild_name</a>";
+				$guild_name = "<a href=\"guild.php?action=view_guild&amp;error=3&amp;id={$char[31]}\" >$guild_name</a>";
 			if ($char_data[CHAR_DATA_OFFSET_GUILD_RANK])
 			{
-				$guild_rank_query = $sql->query("SELECT rname FROM guild_rank WHERE guildid ='{$char_data[CHAR_DATA_OFFSET_GUILD_ID]}' AND rid='{$char_data[CHAR_DATA_OFFSET_GUILD_RANK]}'");
+				$guild_rank_query = $sql->query("SELECT rname FROM guild_rank WHERE guildid ='{$char[31]}' AND rid='{$char_data[CHAR_DATA_OFFSET_GUILD_RANK]}'");
 				$guild_rank = $sql->result($guild_rank_query, 0, 'rname');
 			}
 			else
@@ -68,16 +68,6 @@ if ($sql->num_rows($result))
 			$guild_rank = $lang_global['none'];
 		}
 		
-		$block = unpack("f", pack("L", $char_data[CHAR_DATA_OFFSET_BLOCK]));
-		$block = round($block[1],4);
-		$dodge = unpack("f", pack("L", $char_data[CHAR_DATA_OFFSET_DODGE]));
-		$dodge = round($dodge[1],4);
-		$parry = unpack("f", pack("L", $char_data[CHAR_DATA_OFFSET_PARRY]));
-		$parry = round($parry[1],4);
-		$crit = unpack("f", pack("L", $char_data[CHAR_DATA_OFFSET_MELEE_CRIT]));
-		$crit = round($crit[1],4);
-		$range_crit = unpack("f", pack("L", $char_data[CHAR_DATA_OFFSET_RANGE_CRIT]));
-		$range_crit = round($range_crit[1],4);
 		$output .= "<center>
 			<form method=\"get\" action=\"char_edit.php\" name=\"form\">
 				<input type=\"hidden\" name=\"action\" value=\"do_edit_char\" />
@@ -86,14 +76,14 @@ if ($sql->num_rows($result))
 					<tr>
 						<td colspan=\"8\">
 							<font class=\"bold\">
-							<input type=\"text\" name=\"name\" size=\"14\" maxlength=\"12\" value=\"$char[3]\" /> - 
-							<img src='img/c_icons/{$char[4]}-{$char[14]}.gif' onmousemove='toolTip(\"".char_get_race_name($char[4])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /> 
-							<img src='img/c_icons/{$char[5]}.gif' onmousemove='toolTip(\"".char_get_class_name($char[5])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /> - lvl ".char_get_level_color($char[13])."</font>
+							<input type=\"text\" name=\"name\" size=\"14\" maxlength=\"12\" value=\"$char[2]\" /> - 
+							<img src='img/c_icons/{$char[3]}-{$char[13]}.gif' onmousemove='toolTip(\"".char_get_race_name($char[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /> 
+							<img src='img/c_icons/{$char[4]}.gif' onmousemove='toolTip(\"".char_get_class_name($char[4])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /> - lvl ".char_get_level_color($char[12])."</font>
 							<br />$online
 						</td>
 					</tr>
 					<tr>
-						<td colspan=\"8\">".get_map_name($char[9], $sqlm)." - ".get_zone_name($char[12], $sqlm)."</td>
+						<td colspan=\"8\">".get_map_name($char[8], $sqlm)." - ".get_zone_name($char[11], $sqlm)."</td>
 					</tr>
 					<tr>
 						<td colspan=\"8\">{$lang_char['username']}: 
@@ -105,9 +95,9 @@ if ($sql->num_rows($result))
 					</tr>
 					<tr>
 						<td colspan=\"8\">{$lang_char['honor_points']}: 
-							<input type=\"text\" name=\"honor_points\" size=\"8\" maxlength=\"6\" value=\"{$char[16]}\" />/
-							<input type=\"text\" name=\"arena_points\" size=\"8\" maxlength=\"6\" value=\"{$char[15]}\" /> - {$lang_char['honor_kills']}: 
-							<input type=\"text\" name=\"total_kills\" size=\"8\" maxlength=\"6\" value=\"{$char[19]}\" />
+							<input type=\"text\" name=\"honor_points\" size=\"8\" maxlength=\"6\" value=\"{$char[15]}\" />/
+							<input type=\"text\" name=\"arena_points\" size=\"8\" maxlength=\"6\" value=\"{$char[14]}\" /> - {$lang_char['honor_kills']}: 
+							<input type=\"text\" name=\"total_kills\" size=\"8\" maxlength=\"6\" value=\"{$char[18]}\" />
 						</td>
 					</tr>
 					<tr>
@@ -116,14 +106,6 @@ if ($sql->num_rows($result))
 						</td>
 						<td width=\"18%\">{$lang_item['head']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_HEAD]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_HEAD])."</a>
-						</td>
-						<td width=\"15%\">{$lang_item['health']}:</td>
-						<td width=\"15%\">
-							<input type=\"text\" name=\"health\" size=\"10\" maxlength=\"6\" value=\"{$char[22]}\" />
-						</td>
-						<td width=\"15%\">{$lang_item['res_holy']}:</td>
-						<td width=\"15%\">
-							<input type=\"text\" name=\"res_holy\" size=\"10\" maxlength=\"4\" value=\"{$char_data[CHAR_DATA_OFFSET_RES_HOLY]}\" />
 						</td>
 						<td width=\"18%\">{$lang_item['gloves']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_GLOVES]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_GLOVES])."</a>
@@ -139,14 +121,6 @@ if ($sql->num_rows($result))
 						<td>{$lang_item['neck']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_NECK]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_NECK])."</a>
 						</td>
-						<td>{$lang_item['mana']}:</td>
-						<td>
-							<input type=\"text\" name=\"mana\" size=\"10\" maxlength=\"6\" value=\"{$char[23]}\" />
-						</td>
-						<td>{$lang_item['res_arcane']}:</td>
-						<td>
-							<input type=\"text\" name=\"res_arcane\" size=\"10\" maxlength=\"4\" value=\"{$char_data[CHAR_DATA_OFFSET_RES_ARCANE]}\" />
-						</td>
 						<td>{$lang_item['belt']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_BELT]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_BELT])."</a>
 						</td>
@@ -160,14 +134,6 @@ if ($sql->num_rows($result))
 						</td>
 						<td>{$lang_item['shoulder']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_SHOULDER]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_SHOULDER])."</a>
-							</td>
-						<td>{$lang_item['strength']}:</td>
-						<td>
-							<input type=\"text\" name=\"str\" size=\"10\" maxlength=\"4\" value=\"{$char_data[CHAR_DATA_OFFSET_STR]}\" />
-						</td>
-						<td>{$lang_item['res_fire']}:</td>
-						<td>
-							<input type=\"text\" name=\"res_fire\" size=\"10\" maxlength=\"4\" value=\"{$char_data[CHAR_DATA_OFFSET_RES_FIRE]}\" />
 						</td>
 						<td>{$lang_item['legs']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_LEGS]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_LEGS])."</a>
@@ -183,14 +149,6 @@ if ($sql->num_rows($result))
 						<td>{$lang_item['back']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_BACK]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_BACK])."</a>
 						</td>
-						<td>{$lang_item['agility']}:</td>
-						<td>
-							<input type=\"text\" name=\"agi\" size=\"10\" maxlength=\"4\" value=\"{$char_data[CHAR_DATA_OFFSET_AGI]}\" />
-						</td>
-						<td>{$lang_item['res_nature']}:</td>
-						<td>
-							<input type=\"text\" name=\"res_nature\" size=\"10\" maxlength=\"4\" value=\"{$char_data[CHAR_DATA_OFFSET_RES_NATURE]}\" />
-						</td>
 						<td>{$lang_item['feet']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_FEET]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_FEET])."</a>
 						</td>
@@ -204,14 +162,6 @@ if ($sql->num_rows($result))
 						</td>
 						<td>{$lang_item['chest']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_CHEST]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_CHEST])."</a>
-						</td>
-						<td>{$lang_item['stamina']}:</td>
-						<td>
-							<input type=\"text\" name=\"sta\" size=\"10\" maxlength=\"4\" value=\"{$char_data[CHAR_DATA_OFFSET_STA]}\" />
-						</td>
-						<td>{$lang_item['res_frost']}:</td>
-						<td>
-							<input type=\"text\" name=\"res_frost\" size=\"10\" maxlength=\"4\" value=\"{$char_data[CHAR_DATA_OFFSET_RES_FROST]}\" />
 						</td>
 						<td>{$lang_item['finger']} 1<br />
 							<a href=\"$item_datasite{$char_data[380]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_FINGER1])."</a>
@@ -227,14 +177,6 @@ if ($sql->num_rows($result))
 						<td>{$lang_item['shirt']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_SHIRT]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_SHIRT])."</a>
 						</td>
-						<td>{$lang_item['intellect']}:</td>
-						<td>
-							<input type=\"text\" name=\"int\" size=\"10\" maxlength=\"4\" value=\"{$char_data[CHAR_DATA_OFFSET_INT]}\" />
-						</td>
-						<td>{$lang_item['res_shadow']}:</td>
-						<td>
-							<input type=\"text\" name=\"res_shadow\" size=\"10\" maxlength=\"4\" value=\"{$char_data[CHAR_DATA_OFFSET_RES_SHADOW]}\" />
-						</td>
 						<td>{$lang_item['finger']} 2<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_FINGER2]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_FINGER2])."</a>
 						</td>
@@ -248,10 +190,6 @@ if ($sql->num_rows($result))
 						</td>
 						<td>{$lang_item['tabard']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_TABARD]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_TABARD])."</a>
-						</td>
-						<td>{$lang_item['spirit']}:</td>
-						<td>
-							<input type=\"text\" name=\"spi\" size=\"10\" maxlength=\"4\" value=\"{$char_data[CHAR_DATA_OFFSET_SPI]}\" />
 						</td>
 						<td>{$lang_char['exp']}:</td>
 						<td>
@@ -270,16 +208,6 @@ if ($sql->num_rows($result))
 						</td>
 						<td>{$lang_item['wrist']}<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_WRIST]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_WRIST])."</a>
-						</td>
-						<td>{$lang_item['armor']}:</td>
-						<td>
-							<input type=\"text\" name=\"armor\" size=\"10\" maxlength=\"6\" value=\"{$char_data[CHAR_DATA_OFFSET_ARMOR]}\" />
-						</td>
-						<td>{$lang_char['melee_ap']}: 
-							<input type=\"text\" name=\"attack_power\" size=\"10\" maxlength=\"6\" value=\"{$char_data[CHAR_DATA_OFFSET_AP]}\" />
-						</td>
-						<td>{$lang_char['ranged_ap']}: 
-							<input type=\"text\" name=\"range_attack_power\" size=\"10\" maxlength=\"6\" value=\"{$char_data[CHAR_DATA_OFFSET_RANGED_AP]}\" />
 						</td>
 						<td>{$lang_item['trinket']} 2<br />
 							<a href=\"$item_datasite{$char_data[CHAR_DATA_OFFSET_EQU_TRINKET2]}\" target=\"_blank\">".get_item_name($char_data[CHAR_DATA_OFFSET_EQU_TRINKET2])."</a>
@@ -305,30 +233,21 @@ if ($sql->num_rows($result))
 						<td>
 							<input type=\"checkbox\" name=\"check[]\" value=\"a17\" />
 						</td>
-					</tr>	
-					<tr>
-						<td colspan=\"8\">{$lang_char['block']} : 
-							<input type=\"text\" name=\"block\" size=\"5\" maxlength=\"3\" value=\"$block\" />%
-							| {$lang_char['dodge']}: <input type=\"text\" name=\"dodge\" size=\"5\" maxlength=\"3\" value=\"$dodge\" />%
-							| {$lang_char['parry']}: <input type=\"text\" name=\"parry\" size=\"5\" maxlength=\"3\" value=\"$parry\" />%
-							| {$lang_char['melee_crit']}: <input type=\"text\" name=\"crit\" size=\"5\" maxlength=\"3\" value=\"$crit\" />%
-							| {$lang_char['ranged_crit']}: <input type=\"text\" name=\"range_crit\" size=\"3\" maxlength=\"14\" value=\"$range_crit\" />%
-						</td>
 					</tr>
 					<tr>
 						<td colspan=\"4\">{$lang_char['gold']}: 
-							<input type=\"text\" name=\"money\" size=\"10\" maxlength=\"8\" value=\"{$char[30]}\" />
+							<input type=\"text\" name=\"money\" size=\"10\" maxlength=\"8\" value=\"{$char[29]}\" />
 						</td>
 						<td colspan=\"4\">{$lang_char['tot_paly_time']}: 
-							<input type=\"text\" name=\"tot_time\" size=\"8\" maxlength=\"14\" value=\"{$char[10]}\" />
+							<input type=\"text\" name=\"tot_time\" size=\"8\" maxlength=\"14\" value=\"{$char[9]}\" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan=\"5\">{$lang_char['location']}:
-							X:<input type=\"text\" name=\"x\" size=\"10\" maxlength=\"8\" value=\"{$char[6]}\" />
-							Y:<input type=\"text\" name=\"y\" size=\"8\" maxlength=\"16\" value=\"{$char[7]}\" />
-							Z:<input type=\"text\" name=\"z\" size=\"8\" maxlength=\"16\" value=\"{$char[11]}\" />
-							Map:<input type=\"text\" name=\"map\" size=\"8\" maxlength=\"16\" value=\"{$char[8]}\" />
+							X:<input type=\"text\" name=\"x\" size=\"10\" maxlength=\"8\" value=\"{$char[5]}\" />
+							Y:<input type=\"text\" name=\"y\" size=\"8\" maxlength=\"16\" value=\"{$char[6]}\" />
+							Z:<input type=\"text\" name=\"z\" size=\"8\" maxlength=\"16\" value=\"{$char[10]}\" />
+							Map:<input type=\"text\" name=\"map\" size=\"8\" maxlength=\"16\" value=\"{$char[7]}\" />
 						</td>
 						<td colspan=\"3\">{$lang_char['move_to']}: 
 							<input type=\"text\" name=\"tp_to\" size=\"24\" maxlength=\"64\" value=\"\" />
@@ -588,13 +507,11 @@ if ($sql->num_rows($result))
 		$char_data = explode(' ',$char[0]);
 		$char_data[CHAR_DATA_OFFSET_AP] = $new_attack_power;
 		$char_data[CHAR_DATA_OFFSET_RANGED_AP] = $new_range_attack_power;
-		$char[31] = $new_exp;
-		$char[30] = $new_money;
-		$char[15] = $new_arena_points;
-		$char[16] = $new_honor_points;
-		$char[19] = $new_total_kills;
-		$char[22] = $new_health;
-		$char[23] = $new_mana;
+		$char[30] = $new_exp;
+		$char[29] = $new_money;
+		$char[14] = $new_arena_points;
+		$char[15] = $new_honor_points;
+		$char[18] = $new_total_kills;
 		$char_data[CHAR_DATA_OFFSET_STR] = $new_str;
 		$char_data[CHAR_DATA_OFFSET_AGI] = $new_agi;
 		$char_data[CHAR_DATA_OFFSET_STA] = $new_sta;
@@ -680,7 +597,7 @@ if ($sql->num_rows($result))
 		else
 			$teleport = "map='$map', position_x='$x', position_y='$y', position_z='$z',";
 
-		$result = $sql->query("UPDATE `characters` SET data = '$data', name = '$new_name', totaltime = '$new_tot_time', money = '$new_money', health = '$new_health', power1 = '$new_mana', xp = '$new_exp', arenaPoints = '$new_arena_points', totalHonorPoints = '$new_honor_points', totalKills = '$new_total_kills' WHERE guid = '$id'");
+		$result = $sql->query("UPDATE `characters` SET name = '$new_name', totaltime = '$new_tot_time', money = '$new_money', power1 = '$new_mana', xp = '$new_exp', arenaPoints = '$new_arena_points', totalHonorPoints = '$new_honor_points', totalKills = '$new_total_kills' WHERE guid = '$id'");
 		$sql->close();
 		unset($sql);
 
