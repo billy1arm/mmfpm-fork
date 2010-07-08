@@ -65,28 +65,29 @@ function browse_chars(&$sqlr, &$sqlc)
         $where_out .= ") ";
         unset($result);
 
-        $sql_query = "SELECT characters.guid, characters.name, characters.account, characters.race, characters.class, characters.zone, characters.map,online, level, characters.gender, characters.logout_time, guildid FROM characters, guild_member WHERE $where_out AND guild_member.guid = characters.guid GROUP BY characters.name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+               // fiel index             0             1               2               3         4             5         6             7               8               9               10                              11
+        $sql_query = "SELECT guid, name, account, race, class, zone, map, online, level, gender, logout_time, totalHonorPoints FROM characters WHERE $where_out GROUP BY name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
       break;
 
       case "level":
         if (is_numeric($search_value)); else $search_value = 1;
         $where_out ="level = $search_value";
 
-        $sql_query = "SELECT characters.guid, characters.name, characters.account, characters.race, characters.class, characters.zone, characters.map,online, level, characters.gender, characters.logout_time, guildid FROM characters, guild_member WHERE $where_out AND guild_member.guid = characters.guid GROUP BY characters.name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT guid, name, account, race, class, zone, map, online, level, gender, logout_time, totalHonorPoints FROM characters WHERE $where_out GROUP BY name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
       break;
 
       case "greater_level":
         if (is_numeric($search_value)); else $search_value = 1;
         $where_out ="level > $search_value";
 
-        $sql_query = "SELECT characters.guid, characters.name, characters.account, characters.race, characters.class, characters.zone, characters.map,online, level, characters.gender, characters.logout_time, guildid FROM characters, guild_member WHERE $where_out AND guild_member.guid = characters.guid GROUP BY characters.name ORDER BY 'level' $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT guid, name, account, race, class, zone, map, online, level, gender, logout_time, totalHonorPoints FROM characters WHERE $where_out GROUP BY name ORDER BY 'level' $order_dir LIMIT $start, $itemperpage";
       break;
 
       case "gold":
         if (is_numeric($search_value)); else $search_value = 1;
         $where_out ="money > $search_value";
 
-        $sql_query = "SELECT characters.guid, characters.name, characters.account, characters.race, characters.class, characters.zone, characters.map,online, level, characters.gender, characters.logout_time, guildid FROM characters, guild_member WHERE $where_out AND guild_member.guid = characters.guid GROUP BY characters.name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT guid, name, account, race, class, zone, map, online, level, gender, logout_time, totalHonorPoints FROM characters WHERE $where_out GROUP BY name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
       break;
 
       case "guild":
@@ -111,7 +112,7 @@ function browse_chars(&$sqlr, &$sqlc)
         $where_out .= ") ";
         unset($result);
 
-        $sql_query = "SELECT characters.guid, characters.name, characters.account, characters.race, characters.class, characters.zone, characters.map,online, level, characters.gender, characters.logout_time, guildid FROM characters, guild_member WHERE $where_out AND guild_member.guid = characters.guid GROUP BY characters.name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT guid, name, account, race, class, zone, map, online, level, gender, logout_time, totalHonorPoints FROM characters WHERE $where_out GROUP BY name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
       break;
 
       case "item":
@@ -127,29 +128,28 @@ function browse_chars(&$sqlr, &$sqlc)
         $where_out .= ") ";
         unset($result);
 
-        $sql_query = "SELECT characters.guid, characters.name, characters.account, characters.race, characters.class, characters.zone, characters.map,online, level, characters.gender, characters.logout_time, guildid FROM characters, guild_member WHERE $where_out AND guild_member.guid = characters.guid GROUP BY characters.name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT guid, name, account, race, class, zone, map, online, level, gender, logout_time, totalHonorPoints FROM characters WHERE $where_out GROUP BY name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
       break;
 
      case "greater_rank":
         if (is_numeric($search_value)); else $search_value = 0;
         $where_out ="totalHonorPoints > $search_value";
 
-        $sql_query = "SELECT characters.guid, characters.name, characters.account, characters.race, characters.class, characters.zone, characters.map,online, level, characters.gender, characters.logout_time, guildid FROM characters, guild_member
-        WHERE $where_out AND guild_member.guid = characters.guid ORDER BY 'highest_rank' $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT guid, name, account, race, class, zone, map, online, level, gender, logout_time, totalHonorPoints FROM characters WHERE $where_out ORDER BY totalHonorPoints $order_dir LIMIT $start, $itemperpage";
       break;
 
       case "highest_rank":
         if (is_numeric($search_value)); else $search_value = 0;
         $where_out ="totalHonorPoints = $search_value";
 
-        $sql_query = "SELECT characters.guid, characters.name, characters.account, characters.race, characters.class, characters.zone, characters.map,online, level, characters.gender, characters.logout_time, guildid FROM characters, guild_member WHERE $where_out AND guild_member.guid = characters.guid GROUP BY characters.name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT guid, name, account, race, class, zone, map, online, level, gender, logout_time, totalHonorPoints FROM characters WHERE $where_out GROUP BY name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
       break;
 
       default:
         if (preg_match('/^[\t\v\b\f\a\n\r\\\"\'\? <>[](){}_=+-|!@#$%^&*~`.,0123456789\0]{1,30}$/', $search_value)) redirect("charlist.php?error=2");
         $where_out ="$search_by LIKE '%$search_value%'";
 
-        $sql_query = "SELECT characters.guid, characters.name, characters.account, characters.race, characters.class, characters.zone, characters.map,online, level, characters.gender, characters.logout_time, guildid FROM characters, guild_member WHERE guild_member.guid = characters.guid GROUP BY characters.name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT guid, name, account, race, class, zone, map, online, level, gender, logout_time, totalHonorPoints FROM characters WHERE $where_out GROUP BY name ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
     }
 
     $query_1 = $sqlc->query("SELECT count(*) FROM `characters` where $where_out");
@@ -158,8 +158,7 @@ function browse_chars(&$sqlr, &$sqlc)
   else
   {
     $query_1 = $sqlc->query("SELECT count(*) FROM `characters`");
-    $query = $sqlc->query("SELECT guid, name, account, race, class, zone, map, totalHonorPoints AS highest_rank,
-      online,level, gender, logout_time FROM `characters` ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
+    $query = $sqlc->query("SELECT guid, name, account, race, class, zone, map, online, level, gender, logout_time, totalHonorPoints FROM characters ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
   }
 
   $all_record = $sqlc->result($query_1,0);
@@ -237,7 +236,7 @@ function browse_chars(&$sqlr, &$sqlc)
                 <th width=\"1%\"><a href=\"char_list.php?order_by=level&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='level' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['level']}</a></th>
                 <th width=\"10%\"><a href=\"char_list.php?order_by=map&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='map '.$order_dir.', zone' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['map']}</a></th>
                 <th width=\"10%\"><a href=\"char_list.php?order_by=zone&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='zone '.$order_dir.', map' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['zone']}</a></th>
-                <th width=\"1%\"><a href=\"char_list.php?order_by=highest_rank&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='highest_rank' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['honor_kills']}</a></th>
+                <th width=\"1%\"><a href=\"char_list.php?order_by=totalHonorPoint&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='totalHonorPoint' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['honor_kills']}</a></th>
                 <th width=\"10%\"><a href=\"char_list.php?order_by=gname&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='gname' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['guild']}</a></th>
                 <th width=\"1%\"><a href=\"char_list.php?order_by=logout_time&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='logout_time' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['lastseen']}</a></th>
                 <th width=\"1%\"><a href=\"char_list.php?order_by=online&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='online' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['online']}</a></th>";
@@ -263,9 +262,9 @@ function browse_chars(&$sqlr, &$sqlc)
       if ($owner_gmlvl == null)
         $owner_gmlvl = 0;
     $owner_acc_name = $sqlr->result($result, 0, 'username');
-    $lastseen = date('Y-m-d G:i:s', $char[11]);
+    $lastseen = date('Y-m-d G:i:s', $char[10]);
 
-    $guild_name = $sqlc->fetch_row($sqlc->query('SELECT G.name FROM characters C, guild_member GM, guild G WHERE C.guid = GM.guid AND GM.guildid = G.guildid AND C.guid='.$char[0].''));
+    $guild_name = $sqlc->fetch_row($sqlc->query('SELECT G.name, G.guildid FROM characters C, guild_member GM, guild G WHERE C.guid = GM.guid AND GM.guildid = G.guildid AND C.guid='.$char[0].''));
 
     if (($user_lvl >= $owner_gmlvl)||($owner_acc_name == $user_name))
     {
@@ -280,15 +279,15 @@ function browse_chars(&$sqlr, &$sqlc)
                 <td>$char[0]</td>
                 <td><a href=\"char.php?id=$char[0]\">".htmlentities($char[1], ENT_QUOTES, 'UTF-8')."</a></td>
                 <td><a href=\"user.php?action=edit_user&amp;error=11&amp;id=$char[2]\">".htmlentities($owner_acc_name, ENT_QUOTES, 'UTF-8')."</a></td>
-                <td><img src='img/c_icons/{$char[3]}-{$char[10]}.gif' onmousemove='toolTip(\"".char_get_race_name($char[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /></td>
+                <td><img src='img/c_icons/{$char[3]}-{$char[9]}.gif' onmousemove='toolTip(\"".char_get_race_name($char[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /></td>
                 <td><img src='img/c_icons/{$char[4]}.gif' onmousemove='toolTip(\"".char_get_class_name($char[4])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /></td>
-                <td>".char_get_level_color($char[9])."</td>
+                <td>".char_get_level_color($char[8])."</td>
                 <td class=\"small\"><span onmousemove='toolTip(\"MapID:".$char[6]."\",\"item_tooltip\")' onmouseout='toolTip()'>".get_map_name($char[6], $sqlm)."</span></td>
                 <td class=\"small\"><span onmousemove='toolTip(\"ZoneID:".$char[5]."\",\"item_tooltip\")' onmouseout='toolTip()'>".get_zone_name($char[5], $sqlm)."</span></td>
-                <td>$char[7]</td>
-                <td class=\"small\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;id=$char[12]\">".htmlentities($guild_name[0], ENT_QUOTES, 'UTF-8')."</a></td>
+                <td>$char[11]</td>
+                <td class=\"small\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;id=$guild_name[1]\">".htmlentities($guild_name[0], ENT_QUOTES, 'UTF-8')."</a></td>
                 <td class=\"small\">$lastseen</td>
-                <td>".(($char[8]) ? "<img src=\"img/up.gif\" alt=\"\" />" : "-")."</td>";
+                <td>".(($char[7]) ? "<img src=\"img/up.gif\" alt=\"\" />" : "-")."</td>";
       if ($showcountryflag)
       {
         $country = misc_get_country_by_account($char[2], $sqlr, $sqlm);
