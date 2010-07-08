@@ -31,15 +31,6 @@ function del_char($guid, $realm)
 		else
 		{
 		//Delete pet aura ,spells and cooldowns
-		$sqlc->query('DELETE 
-						FROM item_text 
-						WHERE id IN
-					(SELECT body
-						FROM mail 
-						WHERE receiver IN
-					(SELECT guid 
-						FROM characters 
-						WHERE guid = '.$guid.'))');
 		foreach ($tab_del_pet as $value)
 		$sqlc->query('DELETE 
 						FROM '.$value[0].' 
@@ -107,15 +98,6 @@ function del_acc($acc_id)
 				while ($row = $sqlc->fetch_assoc($result))
 				{
 					//Delete pet aura ,spells and cooldowns
-					$sqlc->query('DELETE 
-									FROM item_text 
-									WHERE id IN
-								(SELECT body 
-									FROM mail 
-									WHERE receiver IN
-								(SELECT guid 
-									FROM characters 
-									WHERE guid = '.$row['guid'].'))');
 					foreach ($tab_del_pet as $value)
 					$sqlc->query('DELETE 
 									FROM '.$value[0].' 
