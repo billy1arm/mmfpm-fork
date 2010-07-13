@@ -322,6 +322,7 @@ $menu_array = array
       array(       'motd.php',   'add_motd', 1,5,5,5),
       array(    'message.php',    'message', 1,5,5,5),
       array(        'ssh.php',   'ssh_line', 1,5,5,5),
+      array(         'ip.php',         'ip', 1,5,5,5),
     ),
   ),
   array
