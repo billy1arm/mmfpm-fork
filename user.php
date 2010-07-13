@@ -239,7 +239,7 @@ function browse_users(&$sqlr, &$sqlc)
                   <td class="small">'.$data['joindate'].'</td>';
       if (($user_lvl >= $action_permission['update'])||($user_name === $data['username']))
         $output .= '
-                  <td>'.$data['last_ip'].'</td>';
+                  <td><a target="_new" href="ip.php?ip='.$data['last_ip'].'">'.$data['last_ip'].'</a></td>';
       else
         $output .= '
                   <td>*******</td>';
@@ -857,7 +857,7 @@ function edit_user()
                 <td>'.$lang_user['last_ip'].'</td>';
   if($user_lvl >= $action_permission['update'])
     $output .= '
-                <td>'.$data['last_ip'].'<a href="banned.php?action=do_add_entry&amp;entry='.$data['last_ip'].'&amp;bantime=3600&amp;ban_type=ip_banned"> &lt;- '.$lang_user['ban_this_ip'].'</a></td>';
+                <td><a target="_new" href="ip.php?ip='.$data['last_ip'].'">'.$data['last_ip'].'</a>&nbsp;<-&nbsp;<a href="banned.php?action=do_add_entry&amp;entry='.$data['last_ip'].'&amp;bantime=3600&amp;ban_type=ip_banned"> &lt;- '.$lang_user['ban_this_ip'].'</a></td>';
   else
     $output .= "
                 <td>***.***.***.***</td>";

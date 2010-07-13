@@ -79,7 +79,7 @@ function edit_user(&$sqlr, &$sqlc)
                   </tr>
                   <tr>
                     <td>'.$lang_edit['last_ip'].'</td>
-                    <td>'.$acc['last_ip'].'</td>
+                    <td><a target="_new" href="ip.php?ip='.$acc['last_ip'].'">'.$acc['last_ip'].'</a></td>
                   </tr>';
     if ($expansion_select)
     {
