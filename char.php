@@ -328,7 +328,7 @@ function char_main(&$sqlr, &$sqlc)
         // Don't know if FOCUS is the right one need to verify with Death Knight player.
         $output .= '
                       <div class="gradient_p">'.$lang_item['runic'].':</div>
-                      <div class="gradient_pp">Unknown</div>';
+                      <div class="gradient_pp">'.$char['power4'].'</div>';
       }
       elseif ($char['class'] == 11) // druid
       {

@@ -572,14 +572,12 @@ if ($sql->num_rows($result))
 					$item_inst_id = $sql->result($result, 0, 'item');
 					$sql->query("DELETE FROM character_inventory WHERE guid = '$id' AND slot = $item_num AND bag = 0");
 					$sql->query("DELETE FROM item_instance WHERE guid = '$item_inst_id' AND owner_guid = '$id'");
-					$sql->query("DELETE FROM item_text WHERE id = '$item_inst_id'");
 				}
 				else
 				{ 
 					//deleting inv/bank items
 					$sql->query("DELETE FROM character_inventory WHERE guid = '$id' AND item = '$item_num'");
 					$sql->query("DELETE FROM item_instance WHERE guid = '$item_num' AND owner_guid = '$id'");
-					$sql->query("DELETE FROM item_text WHERE id = '$item_num'");
 				}
 			}
 		}
