@@ -998,6 +998,8 @@ function lang_user()
 		'ip' => 'IP',
 		'failed_logins' => 'Ошибка входа',
 		'locked' => 'Замок',
+		'last_login' => 'Последний вход',
+		'online' => 'Онлайн',
 		'del_selected_users' => 'Удалить выбранных',
 		'backup_selected_users' => 'Резерв выбранных',
 		'acc_backedup' => 'Резервирование выполнено успешно',
