@@ -90,7 +90,7 @@ $tab_del_user_characters_table = Array
 $tab_del_user_other_tables = Array
 (
   Array('arena_team_member','guid'),
-  Array('auctionhouse','itemowner'),
+  Array('auction','itemowner'),
   Array('character_account_data','guid'),
   Array('character_achievement','guid'),
   Array('character_achievement_progress','guid'),
